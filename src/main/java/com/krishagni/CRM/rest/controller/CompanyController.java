@@ -7,15 +7,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/company")
 public class CompanyController {	
-	@ResponseBody
-	@RequestMapping(value="/company", method = RequestMethod.GET)
+
+	@RequestMapping(method=RequestMethod.GET)
 	public String getCompanyName() {
 		return "Krishgni Solution"; 
 	}
 	
-	@ResponseBody
-	@RequestMapping(value="/company", method=RequestMethod.POST)
+	@RequestMapping(method=RequestMethod.POST)
 	public void createCompany(@RequestBody CompanyDetail company) {
 		System.out.println(company.getCompanyName());
 	}
