@@ -4,7 +4,7 @@ apply plugin: 'war'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
-archivesBaseName = 'openaccount'
+archivesBaseName = 'CRM'
 description = "OpenAccount"
 
 repositories {
