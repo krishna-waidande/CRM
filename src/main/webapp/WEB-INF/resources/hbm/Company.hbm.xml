@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="com.krishagni.crm.domain.Company" table="COMPANY">
+    <id name="id" column="ID">
+      <generator class="native"/>
+    </id>
+
+    <property name="name" column="NAME" />
+   
+    <query name="getCompanyName">
+      from 
+        Company 
+      where 
+        name = :name
+    </query>
+  </class>
+</hibernate-mapping>
