@@ -5,13 +5,28 @@
 <hibernate-mapping>
   <class name="com.krishagni.crm.domain.Company" table="COMPANY">
     <id name="id" column="ID">
-      <generator class="native"/>
+      <generator class="native" />
     </id>
-
+    
     <property name="name" column="NAME" />
-   
+    
+    <property name="contractType" column="CONTRACT_TYPE" not-null="true">
+      <type name="org.hibernate.type.EnumType">
+        <param name="enumClass">com.krishagni.crm.domain.Company$ContractType</param>
+        <param name="useNamed">true</param>
+      </type>
+    </property>
+    
+    <property name="credits" column="CREDITS" />
+    
+    <property name="startDate" column="START_DATE" />
+    
+    <property name="endDate" column="END_DATE" />
+    
+    <property name="notes" column="NOTES" />
+    
     <query name="getCompanyName">
-      from 
+      from
         Company 
       where 
         name = :name

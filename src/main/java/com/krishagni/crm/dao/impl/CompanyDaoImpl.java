@@ -2,8 +2,8 @@ package com.krishagni.crm.dao.impl;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
-import com.krishagni.crm.dao.CompanyDao;
 import com.krishagni.crm.domain.Company;
+import com.krishagni.crm.dao.CompanyDao;
 
 public class CompanyDaoImpl implements CompanyDao {
 	SessionFactory sessionFactory;
@@ -28,4 +28,3 @@ public class CompanyDaoImpl implements CompanyDao {
 	
 	private static final String GET_COMPANY_NAME = FQN + ".getCompanyName";
 }
-

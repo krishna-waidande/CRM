@@ -21,5 +21,13 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-web', version:'4.1.5.RELEASE'
     compile group: 'org.springframework', name: 'spring-aop', version:'4.1.5.RELEASE'
     compile group: 'org.springframework', name: 'spring-aspects', version:'4.1.5.RELEASE'
+    compile group: 'org.springframework', name: 'spring-orm', version: '4.1.5.RELEASE'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.1.0'
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '4.2.1.Final'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.45'
+    compile group: 'commons-logging', name: 'commons-logging', version:'1.2'
+    compile group: 'log4j', name: 'log4j', version:'1.2.16'
+    compile group: 'log4j', name: 'apache-log4j-extras', version: '1.2.17'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.12'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
 }

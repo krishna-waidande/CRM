@@ -19,7 +19,7 @@ public class CompanyController {
 		return "Krishgni Solution"; 
 	}
 	
-	@RequestMapping(method=RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public CompanyDetail createCompany(@RequestBody CompanyDetail detail) {
 		return companySvc.createCompany(detail);
 	}

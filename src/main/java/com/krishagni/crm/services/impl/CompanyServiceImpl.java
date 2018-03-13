@@ -1,11 +1,11 @@
 package com.krishagni.crm.services.impl;
 
 import com.krishagni.crm.domain.Company;
+import com.krishagni.crm.domain.factory.CompanyFactory;
 import com.krishagni.crm.dao.CompanyDao;
-import com.krishagni.crm.event.CompanyDetail;
 import com.krishagni.crm.exception.CRMException;
 import com.krishagni.crm.services.CompanyService;
-import com.krishagni.crm.domain.factory.CompanyFactory;
+import com.krishagni.crm.event.CompanyDetail;
 import org.springframework.transaction.annotation.Transactional;
 
 public class CompanyServiceImpl implements CompanyService {
@@ -34,7 +34,7 @@ public class CompanyServiceImpl implements CompanyService {
 		if (company == null) {
 			return;
 		}
-		
-		throw new CRMException(company.getName() + " Company already exists");
+
+		throw new CRMException(company.getName() + " Company already exists.");	
 	}
 }
