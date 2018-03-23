@@ -15,3 +15,4 @@ public interface CompanyDao {
 	
 	List<CompanyDetail> getCompanies(CompanyListCriteria criteria);
 }
+

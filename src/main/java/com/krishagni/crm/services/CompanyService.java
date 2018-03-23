@@ -14,3 +14,4 @@ public interface CompanyService {
 
 	List<CompanyDetail> getCompanies(CompanyListCriteria criteria);
 }
+
