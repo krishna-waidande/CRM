@@ -13,6 +13,7 @@ import com.krishagni.crm.domain.Company;
 import com.krishagni.crm.domain.Company.ContractType;
 import com.krishagni.crm.event.CompanyDetail;
 import com.krishagni.crm.event.CompanyListCriteria;
+import com.krishagni.crm.common.util.Status;
 import com.krishagni.crm.dao.CompanyDao;
 
 public class CompanyDaoImpl implements CompanyDao {
@@ -44,6 +45,7 @@ public class CompanyDaoImpl implements CompanyDao {
 	public List<CompanyDetail> getCompanies(CompanyListCriteria criteria) {
 		Criteria query = sessionFactory.getCurrentSession()
 				.createCriteria(Company.class)
+				.add(Restrictions.ne("status", Status.COMPANY_STATUS_DISABLED))
 				.setMaxResults(criteria.maxResults())
 				.setFirstResult(criteria.startFrom())
 				.addOrder(Order.asc("name"));
