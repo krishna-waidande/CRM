@@ -24,6 +24,8 @@ public class Company {
 	
 	private String notes;
 	
+	private String status;
+	
 	public int getId() {
 		return id;
 	}
@@ -71,12 +73,20 @@ public class Company {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-
+	
 	public String getNotes() {
 		return notes;
 	}
 
 	public void setNotes(String notes) {
 		this.notes = notes;
-	}	
+	}
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 }

@@ -1,6 +1,7 @@
 package com.krishagni.crm.domain.factory.impl;
 
 import com.krishagni.crm.exception.CRMException;
+import com.krishagni.crm.common.util.Status;
 import com.krishagni.crm.domain.Company;
 import com.krishagni.crm.domain.Company.ContractType;
 import com.krishagni.crm.domain.factory.CompanyFactory;
@@ -18,6 +19,7 @@ public class CompanyFactoryImpl implements CompanyFactory {
 		setStartDate(detail, company, crmEx);
 		setEndDate(detail, company, crmEx);
 		setNotes(detail, company, crmEx);
+		setStatus(detail, company, crmEx);
 		crmEx.checkAndThrow();
 		return company;
 	}
@@ -40,12 +42,11 @@ public class CompanyFactoryImpl implements CompanyFactory {
 		}
 		
 		try {
-			company.setContractType(ContractType.valueOf(contractType));
+			company.setContractType(ContractType.valueOf(contractType.toUpperCase()));
 		} catch (IllegalArgumentException iae) {
 			crmEx.addError("The contract type " + contractType + " is invalid.");
 		}
-	
-     }
+	}
 	
 	private void setCredits(CompanyDetail detail, Company company, CRMException crmEx) {
 		if (detail.getCredits() <= 0) {
@@ -81,5 +82,19 @@ public class CompanyFactoryImpl implements CompanyFactory {
 	
 	private void setNotes(CompanyDetail detail, Company company, CRMException crmEx) {
 		company.setNotes(detail.getNotes());
+	}
+	
+	private void setStatus(CompanyDetail detail, Company company, CRMException crmEx) {
+		if (StringUtils.isBlank(detail.getStatus())) {
+			company.setStatus(Status.COMPANY_STATUS_ACTIVE);
+			return;
+		}
+		
+		if (!Status.isValidActivityStatus(detail.getStatus())) {
+			crmEx.addError("The Status " + detail.getStatus() + " is invalid.");
+			return;
+		}
+		
+		company.setStatus(detail.getStatus().toUpperCase());
 	}
 }

@@ -16,29 +16,57 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
   <context:spring-configured />
   <context:annotation-config />
   <mvc:annotation-driven />
+  <task:annotation-driven/>
   <context:component-scan base-package="com.krishagni.crm" />
   <tx:annotation-driven  transaction-manager="transactionManager" />
   
-  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-    <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-    <property name="url" value="jdbc:mysql://localhost:3306/ClientManagement" />
-    <property name="username" value="root" />
-    <property name="password" value="1234" />
+  <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+    <property name="velocityProperties">
+      <value>
+        resource.loader=class
+        class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+        input.encoding=utf-8
+        output.encoding=utf-8
+      </value>
+    </property>
   </bean>
+  
+  <bean id="templateSvc" class="com.krishagni.crm.services.impl.TemplateServiceImpl">
+    <property name="velocityEngine" ref="velocityEngine"/>  
+  </bean>
+    
+  <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+    <property name="username" value="emailforpracticeproject@gmail.com" />
+    <property name="password" value="PlacementCell123" />
+    <property name="javaMailProperties">
+      <props>
+        <prop key="mail.smtp.host">smtp.gmail.com</prop>
+        <prop key="mail.smtp.port">587</prop>
+        <prop key="mail.smtp.email">emailforpracticeproject@gmail.com</prop>
+        <prop key="mail.smtp.auth">true</prop>
+        <prop key="mail.debug">true</prop>
+        <prop key="mail.smtp.starttls.enable">true</prop>
+      </props>
+    </property>
+  </bean>
+  
+  <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+    <property name="jndiName" value="java:/comp/env/jdbc/crm"/>
+  </bean>  
 
   <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
     <property name="dataSource" ref="dataSource" />
     <property name="mappingLocations">
       <list>
-        <value> /WEB-INF/resources/hbm/*.hbm.xml </value>
+       	<value> /WEB-INF/resources/hbm/*.hbm.xml </value>
       </list>
     </property>
     <property name="hibernateProperties">
-       <props>
-         <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-         <prop key="hibernate.show_sql">true</prop>
-         <prop key="hibernate.hbm2ddl.auto">update</prop>
-       </props>
+      <props>
+        <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+        <prop key="hibernate.show_sql">true</prop>
+        <prop key="hibernate.hbm2ddl.auto">update</prop>
+      </props>
     </property>
   </bean>
 	
@@ -50,11 +78,24 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
   <bean id="dao" class="com.krishagni.crm.dao.impl.CompanyDaoImpl">
     <property name="sessionFactory" ref="sessionFactory"></property>
   </bean>
-
-  <bean id="companyFactory" class=" com.krishagni.crm.domain.factory.impl.CompanyFactoryImpl" />
+  
+  <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+    <property name="corePoolSize" value="5" />
+    <property name="maxPoolSize" value="10" />
+    <property name="WaitForTasksToCompleteOnShutdown" value="true"/>
+  </bean>
+  
+  <bean id="emailSvc" class="com.krishagni.crm.services.impl.EmailServiceImpl">
+    <property name="mailSender" ref="mailSender"></property>
+    <property name="templateSvc" ref="templateSvc"></property>
+    <property name="taskExecutor" ref="taskExecutor"></property>
+  </bean>
+ 
+  <bean id="companyFactory" class="com.krishagni.crm.domain.factory.impl.CompanyFactoryImpl" />
   
   <bean id="companySvc" class="com.krishagni.crm.services.impl.CompanyServiceImpl">
     <property name="companyFactory" ref="companyFactory"></property>
     <property name="dao" ref="dao"></property>
+    <property name="emailSvc" ref="emailSvc"></property> 
   </bean>
 </beans>

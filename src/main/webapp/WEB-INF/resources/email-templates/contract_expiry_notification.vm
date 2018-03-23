@@ -1,0 +1,16 @@
+<div>
+  <h4> Hello Admins, </h4>
+  <h4> Below is the list of companies whose contract will be expired within next 90 days. </h4>
+    <table border=1 width=30% style=border-collapse:collapse>
+      <tr>
+        <th width=15%> NAME </th>
+	<th width=15%> END DATE </th>
+      </tr>
+      #foreach($company in $companies)
+        <tr>
+	  <td width=15%> $company.getName() </td>
+	  <td width=15%> $dateFmt.format($company.getEndDate()) </td> 
+        </tr>
+      #end
+    </table>
+</div>

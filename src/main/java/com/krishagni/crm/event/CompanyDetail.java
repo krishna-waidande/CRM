@@ -18,6 +18,8 @@ public class CompanyDetail {
 	
 	private String notes;
 	
+	private String status;
+	
 	public int getId() {
 		return id;
 	}
@@ -49,7 +51,7 @@ public class CompanyDetail {
 	public void setCredits(int credits) {
 		this.credits = credits;
 	}
-
+	
 	public Date getStartDate() {
 		return startDate;
 	}
@@ -73,6 +75,14 @@ public class CompanyDetail {
 	public void setNotes(String notes) {
 		this.notes = notes;
 	}
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 	public static CompanyDetail from(Company company) {
 		CompanyDetail detail = new CompanyDetail();
@@ -83,6 +93,7 @@ public class CompanyDetail {
 		detail.setStartDate(company.getStartDate());
 		detail.setEndDate(company.getEndDate());
 		detail.setNotes(company.getNotes());
+		detail.setStatus(company.getStatus());
 		return detail;
 	}
 }

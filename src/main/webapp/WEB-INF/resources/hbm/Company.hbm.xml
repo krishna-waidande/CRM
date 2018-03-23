@@ -25,11 +25,23 @@
     
     <property name="notes" column="NOTES" />
     
+    <property name="status" column="STATUS" />
+    
     <query name="getCompanyName">
       from
         Company 
       where 
         name = :name
+    </query>
+    
+    <query name ="getContractExpiringCompanies">
+      <![CDATA[
+        from 
+          Company 
+        where 
+          endDate < :date and 
+          status = 'ACTIVE'
+      ]]>
     </query>
   </class>
 </hibernate-mapping>

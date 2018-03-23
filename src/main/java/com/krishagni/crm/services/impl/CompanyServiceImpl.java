@@ -1,18 +1,30 @@
 package com.krishagni.crm.services.impl;
 
-import com.krishagni.crm.domain.Company;
-import com.krishagni.crm.domain.factory.CompanyFactory;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.transaction.annotation.Transactional;
 import com.krishagni.crm.dao.CompanyDao;
+import com.krishagni.crm.domain.Company;
+import com.krishagni.crm.domain.Company.ContractType;
+import com.krishagni.crm.domain.factory.CompanyFactory;
+import com.krishagni.crm.event.CompanyDetail;
 import com.krishagni.crm.exception.CRMException;
 import com.krishagni.crm.services.CompanyService;
-import com.krishagni.crm.event.CompanyDetail;
-import org.springframework.transaction.annotation.Transactional;
+import com.krishagni.crm.services.EmailService;
+import com.krishagni.crm.event.CompanyListCriteria;
+import org.apache.commons.lang3.StringUtils;
 
 public class CompanyServiceImpl implements CompanyService {
 	CompanyFactory companyFactory;
 	
 	CompanyDao dao;
-
+	
+	EmailService emailSvc;
+	
 	public void setCompanyFactory(CompanyFactory companyFactory) {
 		this.companyFactory = companyFactory;
 	}
@@ -20,21 +32,72 @@ public class CompanyServiceImpl implements CompanyService {
 	public void setDao(CompanyDao dao) {
 		this.dao = dao;
 	}
+	
+	public void setEmailSvc(EmailService emailSvc) {
+		this.emailSvc = emailSvc;
+	}
 
 	@Transactional
 	public CompanyDetail createCompany(CompanyDetail detail) {
 		Company company = companyFactory.createCompany(detail);
-		ensureUniqueName(company);
+		ensureUniqueName(company.getName());
 		company = dao.saveCompany(company);
 		return CompanyDetail.from(company);
 	}
+	
+	@Transactional
+	public List<CompanyDetail> getCompanies(CompanyListCriteria criteria) {
+		validateContractType(criteria);
+		List<CompanyDetail> companies = dao.getCompanies(criteria);
+		return companies;
+	}
+	
+	private void ensureUniqueName(String name) {
+		Company company = dao.getCompany(name);
+        	if (company != null) {
+        		throw new CRMException(name + " Company already exists");
+        	}
+	}
 
-	private void ensureUniqueName(Company company) {
-		company = dao.getCompany(company.getName());
-		if (company == null) {
+	@Transactional
+	@Scheduled(cron = "0 * 22 * * ?")
+	public void notifyContractExpiringCmps() {
+		notifyContractExpiringCmps(null);
+	}
+	
+	public void notifyContractExpiringCmps(Date date) {
+		if (date == null) {
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.DATE, 90);
+			date = cal.getTime();
+		} 
+		List<Company> companies = dao.getContractExpiringCompanies(date);
+		notifyAdminForContractExpiry(companies);
+	}
+
+	private void notifyAdminForContractExpiry(List<Company> companies) {
+		if (companies.isEmpty()) {
 			return;
 		}
-
-		throw new CRMException(company.getName() + " Company already exists.");	
+		Map<String, Object> properties = new HashMap<>();
+		properties.put("companies", companies);
+		String[] to = new String[] {"krishnawaidande1512@gmail.com", "ktgnair95@gmail.com"}; 
+		emailSvc.sendMail(CONTRACT_EXPIRY_MAIL_TEMPLATE, CONTRACT_EXPIRY_MAIL_SUBJECT, to, properties);	
 	}
+	
+	private void validateContractType(CompanyListCriteria criteria) {
+		if (StringUtils.isBlank(criteria.contractType())) {
+			return;
+		}
+		
+		try {
+			ContractType.valueOf(criteria.contractType().toUpperCase());
+		} catch (IllegalArgumentException iae) {
+			throw new CRMException("The contract type " + criteria.contractType() + " is invalid.");	
+		}
+	}
+
+	private static final String CONTRACT_EXPIRY_MAIL_SUBJECT = "List Of Expired Contract Companies";
+	
+	private static final String CONTRACT_EXPIRY_MAIL_TEMPLATE = "contract_expiry_notification.vm";
 }
