@@ -7,6 +7,8 @@ import com.krishagni.crm.event.CompanyListCriteria;
 
 public interface CompanyService {
 	CompanyDetail createCompany(CompanyDetail detail);
+
+	CompanyDetail updateCompany(CompanyDetail detail);
 	
 	void notifyContractExpiringCmps();
 	
@@ -14,4 +16,3 @@ public interface CompanyService {
 
 	List<CompanyDetail> getCompanies(CompanyListCriteria criteria);
 }
-

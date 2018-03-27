@@ -11,7 +11,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import com.krishagni.crm.domain.Company;
 import com.krishagni.crm.domain.Company.ContractType;
-import com.krishagni.crm.event.CompanyDetail;
 import com.krishagni.crm.event.CompanyListCriteria;
 import com.krishagni.crm.common.util.Status;
 import com.krishagni.crm.dao.CompanyDao;
@@ -23,15 +22,17 @@ public class CompanyDaoImpl implements CompanyDao {
 		this.sessionFactory = sessionFactory;
 	}
 	
-	public Company saveCompany (Company company) {
-		sessionFactory.getCurrentSession().save(company);
-		return company;
-	}
-	
-	public Company getCompany(String name) {
-		Query query = sessionFactory.getCurrentSession().getNamedQuery(GET_COMPANY_NAME);
-		query.setParameter("name", name);
-		return (Company) query.uniqueResult();
+	public Company getCompany(Long id, String name) {
+		Query query;
+		if (id != null) {
+			query = sessionFactory.getCurrentSession().getNamedQuery(GET_COMPANY_BY_ID);
+			query.setParameter("id", id);
+		} else {
+			query = sessionFactory.getCurrentSession().getNamedQuery(GET_COMPANY_BY_NAME);
+			query.setParameter("name", name);
+		}
+		
+		return (Company) query.uniqueResult();			
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -42,7 +43,7 @@ public class CompanyDaoImpl implements CompanyDao {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<CompanyDetail> getCompanies(CompanyListCriteria criteria) {
+	public List<Company> getCompanies(CompanyListCriteria criteria) {
 		Criteria query = sessionFactory.getCurrentSession()
 				.createCriteria(Company.class)
 				.add(Restrictions.ne("status", Status.COMPANY_STATUS_DISABLED))
@@ -52,6 +53,11 @@ public class CompanyDaoImpl implements CompanyDao {
 					
 		addSearchConditions(query, criteria);
 		return query.list();
+	}
+	
+	public Company saveCompany (Company company) {
+		sessionFactory.getCurrentSession().save(company);
+		return company;
 	}
 	
 	private Criteria addSearchConditions(Criteria query, CompanyListCriteria criteria) {
@@ -88,7 +94,9 @@ public class CompanyDaoImpl implements CompanyDao {
 
 	private static final String FQN = Company.class.getName();
 	
-	private static final String GET_COMPANY_NAME = FQN + ".getCompanyName";
+	private static final String GET_COMPANY_BY_NAME = FQN + ".getCompanyByName";
+	
+	private static final String GET_COMPANY_BY_ID = FQN + ".getCompanyById";
 	
 	private static final String GET_CONTRACT_EXPIRING_CMPS = FQN + ".getContractExpiringCompanies";
 }

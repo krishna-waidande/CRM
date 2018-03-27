@@ -5,6 +5,7 @@ import com.krishagni.crm.event.CompanyListCriteria;
 import com.krishagni.crm.services.CompanyService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,5 +48,12 @@ public class CompanyController {
 	@RequestMapping(method = RequestMethod.POST)
 	public CompanyDetail createCompany(@RequestBody CompanyDetail detail) {
 		return companySvc.createCompany(detail);
+	}
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "/{id}")
+	public CompanyDetail updateCompany(@PathVariable Long id, @RequestBody CompanyDetail detail) {
+		detail.setId(id);
+		
+		return companySvc.updateCompany(detail);
 	}
 }

@@ -27,13 +27,22 @@
     
     <property name="status" column="STATUS" />
     
-    <query name="getCompanyName">
+    <query name="getCompanyByName">
       from
         Company 
       where 
-        name = :name
+        name = :name and
+        status != 'DISABLED'
     </query>
     
+    <query name="getCompanyById">
+      from
+        Company 
+      where 
+        id = :id and
+        status != 'DISABLED'
+    </query>
+   
     <query name ="getContractExpiringCompanies">
       <![CDATA[
         from 

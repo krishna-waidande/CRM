@@ -48,15 +48,49 @@ public class CompanyServiceImpl implements CompanyService {
 	@Transactional
 	public List<CompanyDetail> getCompanies(CompanyListCriteria criteria) {
 		validateContractType(criteria);
-		List<CompanyDetail> companies = dao.getCompanies(criteria);
-		return companies;
+		List<Company> companies = dao.getCompanies(criteria);		
+		return CompanyDetail.from(companies);
 	}
 	
+	@Transactional
+	public CompanyDetail updateCompany(CompanyDetail detail) {
+		Company existing = getCompany(detail.getId(), detail.getName());
+		
+		Company company = companyFactory.createCompany(detail);
+		
+		if (!existing.getName().equals(company.getName())) {
+			ensureUniqueName(company.getName());
+		}
+		existing.update(company);
+		
+		return CompanyDetail.from(existing);
+	}
+
 	private void ensureUniqueName(String name) {
-		Company company = dao.getCompany(name);
-        	if (company != null) {
-        		throw new CRMException(name + " Company already exists");
-        	}
+		Company result = dao.getCompany(null, name);
+		if (result != null) {
+			throw new CRMException("Company "+ name + "already exists.");
+		}
+	}
+	
+	private Company getCompany(Long id, String name) {
+		Company company = null;
+		Object key = null;
+		
+		if (id != null) {
+			company = dao.getCompany(id, null);
+			key = id;
+		} else if (StringUtils.isNotBlank(name)) {
+			company = dao.getCompany(null, name);
+			key = name;
+		}
+		
+		if (key == null) {
+			throw new CRMException("Company id or name required");
+		} else if (company == null) {
+			throw new CRMException("Company "+ key + "not found.");
+		}
+		return company;
 	}
 
 	@Transactional
