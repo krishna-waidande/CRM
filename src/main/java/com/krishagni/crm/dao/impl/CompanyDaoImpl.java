@@ -33,7 +33,7 @@ public class CompanyDaoImpl implements CompanyDao {
 		query.setParameter("name", name);
 		return (Company) query.uniqueResult();
 	}
-	
+		
 	@SuppressWarnings("unchecked")
 	public List<Company> getCompanies(CompanyListCriteria criteria) {
 		Criteria query = sessionFactory.getCurrentSession()
@@ -92,7 +92,7 @@ public class CompanyDaoImpl implements CompanyDao {
 	}
 
 	private static final String FQN = Company.class.getName();
-	
+
 	private static final String GET_COMPANY_BY_ID = FQN + ".getCompanyById";
 	
 	private static final String GET_COMPANY_BY_NAME = FQN + ".getCompanyByName";

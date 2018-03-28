@@ -27,7 +27,6 @@
     
     <property name="status" column="STATUS" />
     
-
     <query name="getCompanyById">
       from
         Company

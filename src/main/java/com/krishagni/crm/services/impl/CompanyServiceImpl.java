@@ -73,7 +73,7 @@ public class CompanyServiceImpl implements CompanyService {
 		existing.delete();
 		return CompanyDetail.from(existing);
 	}
-	
+
 	@Transactional
 	@Scheduled(cron = "0 * 22 * * ?")
 	public void notifyContractExpiringCmps() {

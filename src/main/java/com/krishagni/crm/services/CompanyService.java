@@ -13,8 +13,9 @@ public interface CompanyService {
 	List<CompanyDetail> getCompanies(CompanyListCriteria criteria);
 
 	CompanyDetail deleteCompany(Long id);
-	
+
 	void notifyContractExpiringCmps();
 	
 	void notifyContractExpiringCmps(Date date);
+
 }
