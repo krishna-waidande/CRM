@@ -107,12 +107,4 @@ public class CompanyDetail {
 		}
 		return result;
 	}
-	
-	public static List<CompanyDetail> from(List<Company> companies) {
-		List<CompanyDetail> result = new ArrayList<>();
-		for (Company company : companies) {
-			result.add(CompanyDetail.from(company));
-		}
-		return result;
-	}
 }
