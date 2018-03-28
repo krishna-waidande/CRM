@@ -11,8 +11,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import com.krishagni.crm.domain.Company;
 import com.krishagni.crm.domain.Company.ContractType;
-import com.krishagni.crm.event.CompanyDetail;
 import com.krishagni.crm.event.CompanyListCriteria;
+import com.krishagni.crm.common.util.Status;
 import com.krishagni.crm.dao.CompanyDao;
 
 public class CompanyDaoImpl implements CompanyDao {
@@ -22,15 +22,29 @@ public class CompanyDaoImpl implements CompanyDao {
 		this.sessionFactory = sessionFactory;
 	}
 	
-	public Company saveCompany (Company company) {
-		sessionFactory.getCurrentSession().save(company);
-		return company;
+	public Company getCompanyById(Long id) {
+		Query query= sessionFactory.getCurrentSession().getNamedQuery(GET_COMPANY_BY_ID);
+		query.setParameter("id", id);
+		return (Company) query.uniqueResult();
 	}
 	
-	public Company getCompany(String name) {
-		Query query = sessionFactory.getCurrentSession().getNamedQuery(GET_COMPANY_NAME);
+	public Company getCompanyByName(String name) {
+		Query query = sessionFactory.getCurrentSession().getNamedQuery(GET_COMPANY_BY_NAME);
 		query.setParameter("name", name);
 		return (Company) query.uniqueResult();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Company> getCompanies(CompanyListCriteria criteria) {
+		Criteria query = sessionFactory.getCurrentSession()
+				.createCriteria(Company.class)
+				.add(Restrictions.ne("status", Status.COMPANY_STATUS_DISABLED))
+				.setMaxResults(criteria.maxResults())
+				.setFirstResult(criteria.startFrom())
+				.addOrder(Order.asc("name"));
+					
+		addSearchConditions(query, criteria);
+		return query.list();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -40,16 +54,9 @@ public class CompanyDaoImpl implements CompanyDao {
 		return query.list();
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<CompanyDetail> getCompanies(CompanyListCriteria criteria) {
-		Criteria query = sessionFactory.getCurrentSession()
-				.createCriteria(Company.class)
-				.setMaxResults(criteria.maxResults())
-				.setFirstResult(criteria.startFrom())
-				.addOrder(Order.asc("name"));
-					
-		addSearchConditions(query, criteria);
-		return query.list();
+	public Company saveCompany (Company company) {
+		sessionFactory.getCurrentSession().save(company);
+		return company;
 	}
 	
 	private Criteria addSearchConditions(Criteria query, CompanyListCriteria criteria) {
@@ -86,7 +93,9 @@ public class CompanyDaoImpl implements CompanyDao {
 
 	private static final String FQN = Company.class.getName();
 	
-	private static final String GET_COMPANY_NAME = FQN + ".getCompanyName";
+	private static final String GET_COMPANY_BY_ID = FQN + ".getCompanyById";
 	
+	private static final String GET_COMPANY_BY_NAME = FQN + ".getCompanyByName";
+
 	private static final String GET_CONTRACT_EXPIRING_CMPS = FQN + ".getContractExpiringCompanies";
 }

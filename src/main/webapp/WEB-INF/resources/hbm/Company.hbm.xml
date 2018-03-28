@@ -8,7 +8,7 @@
       <generator class="native" />
     </id>
     
-    <property name="name" column="NAME" />
+    <property name="name" column="NAME" unique="true" />
     
     <property name="contractType" column="CONTRACT_TYPE" not-null="true">
       <type name="org.hibernate.type.EnumType">
@@ -27,21 +27,29 @@
     
     <property name="status" column="STATUS" />
     
-    <query name="getCompanyName">
+
+    <query name="getCompanyById">
+      from
+        Company
+      where
+        id = :id and 
+        status != 'DISABLED'
+    </query>
+
+    <query name="getCompanyByName">
       from
         Company 
       where 
-        name = :name
+        name = :name and
+	status != 'DISABLED'
     </query>
-    
-    <query name ="getContractExpiringCompanies">
-      <![CDATA[
-        from 
-          Company 
-        where 
-          endDate < :date and 
-          status = 'ACTIVE'
-      ]]>
+
+    <query name="getContractExpiringCompanies">
+      from 
+        Company 
+      where 
+        endDate &lt;= :date and 
+        status = 'ACTIVE'
     </query>
   </class>
 </hibernate-mapping>

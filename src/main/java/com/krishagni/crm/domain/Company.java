@@ -1,6 +1,8 @@
 package com.krishagni.crm.domain;
 
 import java.util.Date;
+import com.krishagni.crm.common.util.Status;
+import com.krishagni.crm.common.util.Utility;
 
 public class Company {
 	public enum ContractType {
@@ -10,7 +12,7 @@ public class Company {
 		CUSTOM
 	};
 	
-	private int id;
+	private Long id;
 	
 	private String name;
 	
@@ -26,11 +28,11 @@ public class Company {
 	
 	private String status;
 	
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -88,5 +90,32 @@ public class Company {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public void update(Company company) {
+		this.setName(company.getName());
+		this.setContractType(company.getContractType());
+		this.setCredits(company.getCredits());
+		this.setStartDate(company.getStartDate());
+		this.setEndDate(company.getEndDate());
+		this.setNotes(company.getNotes());
+		setActivityStatus(company.getStatus());
+	}
+
+	public void delete() {
+		this.setName(Utility.getDisabledValue(this.getName(), 255));
+		this.setStatus(Status.COMPANY_STATUS_DISABLED);
+	}
+	
+	private void setActivityStatus(String status) {
+		if (this.status.equals(status)) {
+			return;
+		}
+		
+		if (status.equals(Status.COMPANY_STATUS_DISABLED)) {
+			delete();
+		} else {
+			this.setStatus(status);
+		}
 	}
 }

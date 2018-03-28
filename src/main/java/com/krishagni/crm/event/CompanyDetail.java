@@ -1,10 +1,13 @@
 package com.krishagni.crm.event;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import com.krishagni.crm.domain.Company;
 
 public class CompanyDetail {
-	private int id;
+	private Long id;
 	
 	private String name;
 
@@ -20,11 +23,11 @@ public class CompanyDetail {
 	
 	private String status;
 	
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -95,5 +98,13 @@ public class CompanyDetail {
 		detail.setNotes(company.getNotes());
 		detail.setStatus(company.getStatus());
 		return detail;
+	}	
+
+	public static List<CompanyDetail> from(List<Company> companies) {
+		List<CompanyDetail> result = new ArrayList<>();
+		for (Company company : companies) {
+			result.add(CompanyDetail.from(company));
+		}
+		return result;
 	}
 }

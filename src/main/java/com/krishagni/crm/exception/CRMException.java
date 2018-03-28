@@ -3,6 +3,7 @@ package com.krishagni.crm.exception;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("serial")
 public class CRMException extends RuntimeException {
 	private List<String> errors = new ArrayList<String>();
 	
