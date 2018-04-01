@@ -2,7 +2,6 @@ package com.krishagni.crm.common.util;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.krishagni.crm.domain.Ticket;
 
 public class JsonToJava {
@@ -83,4 +82,3 @@ public class JsonToJava {
 		return tickets;
 	}
 }
-
