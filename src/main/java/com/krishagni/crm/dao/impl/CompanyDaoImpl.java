@@ -13,6 +13,7 @@ import com.krishagni.crm.domain.Company;
 import com.krishagni.crm.domain.Company.ContractType;
 import com.krishagni.crm.event.CompanyListCriteria;
 import com.krishagni.crm.common.util.Status;
+import com.krishagni.crm.domain.Ticket;
 import com.krishagni.crm.dao.CompanyDao;
 
 public class CompanyDaoImpl implements CompanyDao {
@@ -89,6 +90,10 @@ public class CompanyDaoImpl implements CompanyDao {
 		}
 	
 		return query;
+	}
+	
+	public void saveTicket(Ticket ticket) {
+		sessionFactory.getCurrentSession().save(ticket);
 	}
 
 	private static final String FQN = Company.class.getName();

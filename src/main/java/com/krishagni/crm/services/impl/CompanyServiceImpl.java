@@ -1,5 +1,6 @@
 package com.krishagni.crm.services.impl;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -7,6 +8,10 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.krishagni.crm.common.util.JsonToJava;
+import com.krishagni.crm.domain.Ticket;
 import com.krishagni.crm.dao.CompanyDao;
 import com.krishagni.crm.domain.Company;
 import com.krishagni.crm.domain.Company.ContractType;
@@ -78,8 +83,22 @@ public class CompanyServiceImpl implements CompanyService {
 	@Scheduled(cron = "0 * 22 * * ?")
 	public void notifyContractExpiringCmps() {
 		notifyContractExpiringCmps(null);
+		loadJson();
 	}
 
+	public void loadJson() {
+		File json = new File("/home/user/Downloads/JIRA.json");
+		
+		ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		try {
+			JsonToJava obj = mapper.readValue(json, JsonToJava.class);
+			List<Ticket> tickets = obj.generateTickets();
+			saveTickets(tickets);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
 	public void notifyContractExpiringCmps(Date date) {
 		if (date == null) {
 			Calendar cal = Calendar.getInstance();
@@ -137,6 +156,12 @@ public class CompanyServiceImpl implements CompanyService {
 			throw new CRMException("Company '" + key + "' not exist.");
 		}
 		return company;
+	}
+	
+	private void saveTickets(List<Ticket> tickets) {
+		for (Ticket ticket : tickets) {
+			dao.saveTicket(ticket);
+		}
 	}
 
 	private static final String CONTRACT_EXPIRY_MAIL_SUBJECT = "List Of Expired Contract Companies";

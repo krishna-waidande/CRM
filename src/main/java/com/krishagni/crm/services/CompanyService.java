@@ -17,5 +17,7 @@ public interface CompanyService {
 	void notifyContractExpiringCmps();
 	
 	void notifyContractExpiringCmps(Date date);
+	
+	void loadJson();
 
 }
