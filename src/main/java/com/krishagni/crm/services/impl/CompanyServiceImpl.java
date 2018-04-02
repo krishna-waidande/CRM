@@ -80,10 +80,16 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Transactional
-	@Scheduled(cron = "0 * 22 * * ?")
+	@Scheduled(cron = "0 0/2 * * * ?")
 	public void notifyContractExpiringCmps() {
 		notifyContractExpiringCmps(null);
+		truncateTable();
 		loadJson();
+	}
+	
+	@Transactional
+	public void truncateTable() {
+		dao.truncateTable();
 	}
 
 	public void loadJson() {

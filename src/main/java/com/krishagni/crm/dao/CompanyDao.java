@@ -17,5 +17,7 @@ public interface CompanyDao {
 	
 	Company saveCompany(Company company);
 
+	int truncateTable();
+
 	void saveTicket(Ticket ticket);
 }

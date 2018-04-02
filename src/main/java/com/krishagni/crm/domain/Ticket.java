@@ -30,5 +30,4 @@ public class Ticket {
 	public void setSummary(String summary) {
 		this.summary = summary;
 	}
-
 }

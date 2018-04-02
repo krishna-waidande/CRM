@@ -95,6 +95,10 @@ public class CompanyDaoImpl implements CompanyDao {
 	public void saveTicket(Ticket ticket) {
 		sessionFactory.getCurrentSession().save(ticket);
 	}
+	
+	public int truncateTable() {
+		return sessionFactory.getCurrentSession().createQuery("delete from Ticket").executeUpdate();
+	}
 
 	private static final String FQN = Company.class.getName();
 
