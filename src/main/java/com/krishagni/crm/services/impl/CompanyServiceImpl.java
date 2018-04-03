@@ -12,10 +12,11 @@ import com.krishagni.crm.domain.Company;
 import com.krishagni.crm.domain.Company.ContractType;
 import com.krishagni.crm.domain.factory.CompanyFactory;
 import com.krishagni.crm.event.CompanyDetail;
+import com.krishagni.crm.event.CompanyListCriteria;
 import com.krishagni.crm.exception.CRMException;
 import com.krishagni.crm.services.CompanyService;
 import com.krishagni.crm.services.EmailService;
-import com.krishagni.crm.event.CompanyListCriteria;
+
 import org.apache.commons.lang3.StringUtils;
 
 public class CompanyServiceImpl implements CompanyService {
@@ -75,7 +76,7 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Transactional
-	@Scheduled(cron = "0 * 22 * * ?")
+	@Scheduled(cron = "0 0/1 * * * ?")
 	public void notifyContractExpiringCmps() {
 		notifyContractExpiringCmps(null);
 	}
@@ -89,7 +90,7 @@ public class CompanyServiceImpl implements CompanyService {
 		List<Company> companies = dao.getContractExpiringCompanies(date);
 		notifyAdminForContractExpiry(companies);
 	}
-
+	
 	private void notifyAdminForContractExpiry(List<Company> companies) {
 		if (companies.isEmpty()) {
 			return;

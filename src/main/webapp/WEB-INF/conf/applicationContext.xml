@@ -98,4 +98,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <property name="dao" ref="dao"></property>
     <property name="emailSvc" ref="emailSvc"></property> 
   </bean>
+  
+  <bean id="ticketSvc" class="com.krishagni.crm.services.impl.TicketServiceImpl">
+    <property name="dao" ref="dao"></property>
+    <property name="emailSvc" ref="emailSvc"></property> 
+  </bean>
 </beans>

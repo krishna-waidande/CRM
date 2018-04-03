@@ -9,11 +9,12 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import com.krishagni.crm.domain.Company;
-import com.krishagni.crm.domain.Company.ContractType;
-import com.krishagni.crm.event.CompanyListCriteria;
 import com.krishagni.crm.common.util.Status;
 import com.krishagni.crm.dao.CompanyDao;
+import com.krishagni.crm.domain.Company;
+import com.krishagni.crm.domain.Company.ContractType;
+import com.krishagni.crm.domain.JiraTicket;
+import com.krishagni.crm.event.CompanyListCriteria;
 
 public class CompanyDaoImpl implements CompanyDao {
 	SessionFactory sessionFactory;
@@ -32,6 +33,11 @@ public class CompanyDaoImpl implements CompanyDao {
 		Query query = sessionFactory.getCurrentSession().getNamedQuery(GET_COMPANY_BY_NAME);
 		query.setParameter("name", name);
 		return (Company) query.uniqueResult();
+	}
+	
+	public List<Company> getAllCompany(){
+		Query query = sessionFactory.getCurrentSession().getNamedQuery(GET_ALL_COMPANY);
+		return query.list();
 	}
 		
 	@SuppressWarnings("unchecked")
@@ -92,10 +98,14 @@ public class CompanyDaoImpl implements CompanyDao {
 	}
 
 	private static final String FQN = Company.class.getName();
+	
+	private static final String FQN1 = JiraTicket.class.getName();
 
 	private static final String GET_COMPANY_BY_ID = FQN + ".getCompanyById";
 	
 	private static final String GET_COMPANY_BY_NAME = FQN + ".getCompanyByName";
-
+	
+	private static final String GET_ALL_COMPANY = FQN1 + ".getAllCompany";
+	
 	private static final String GET_CONTRACT_EXPIRING_CMPS = FQN + ".getContractExpiringCompanies";
 }

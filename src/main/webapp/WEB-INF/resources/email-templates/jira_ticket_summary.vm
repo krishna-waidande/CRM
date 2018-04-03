@@ -1,0 +1,36 @@
+<div>
+  <h4> Hello, <br> <br></h4>
+  <h4> Below is an auto generated summary of your OpenSpecimen support contract.</h4>
+  <h4>Please let us know any questions or corrections. </h4>
+	<h4>Important notes: </h4>
+  </h4>
+  
+    <h4> Plan type: $company.getContractType() </h4>
+
+	<h4> Start date: $dateFmt.format($company.getStartDate()) </h4>
+
+	<h4> End date: $dateFmt.format($company.getEndDate()) </h4>
+
+	<h4> Total credits: $company.getCredits() </h4>
+
+	<h4> Credits spent: $credits </h4>
+
+	<h4> Credits left: $remainingCredits </h4>
+     
+    <table width=30% style=border-collapse:collapse>
+     <tr>
+       <th width=15%> JIRA_ID </th>
+	   <th width=15%> SUMMARY </th>
+	   <th width=15%> RESOLVE_DATE</th>
+	   <th width=15%> CREDITS_USED</th>
+     </tr>
+     #foreach($ticket in $company.getTickets())
+     <tr>
+	   <td width=15%> $ticket.getJiraId() </td>
+	   <td width=15%> $ticket.getSummary() </td>
+	   <td width=15%> $dateFmt.format($ticket.getResolveDate()) </td> 
+	   <td width=15%> $ticket.getCreditsUsed() </td> 
+     </tr>
+      #end
+    </table>
+</div>

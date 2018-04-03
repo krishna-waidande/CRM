@@ -1,6 +1,8 @@
 package com.krishagni.crm.domain;
 
 import java.util.Date;
+import java.util.Set;
+
 import com.krishagni.crm.common.util.Status;
 import com.krishagni.crm.common.util.Utility;
 
@@ -27,6 +29,8 @@ public class Company {
 	private String notes;
 	
 	private String status;
+	
+	private Set<JiraTicket> tickets;
 	
 	public Long getId() {
 		return id;
@@ -90,6 +94,14 @@ public class Company {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Set<JiraTicket> getTickets() {
+		return tickets;
+	}
+
+	public void setTickets(Set<JiraTicket> tickets) {
+		this.tickets = tickets;
 	}
 
 	public void update(Company company) {

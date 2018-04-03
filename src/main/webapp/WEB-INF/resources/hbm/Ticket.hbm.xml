@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="com.krishagni.crm.domain.JiraTicket" table="TICKETS">
+    <id name="id" column="ID">
+      <generator class="native" />
+    </id>
+    
+    <property name="jiraId" column="JIRA_ID" />
+    
+    <property name="summary" column="SUMMARY" />
+    
+    <property name="resolveDate" column="RESOLVE_DATE" />
+    
+    <property name="creditsUsed" column="CREDITS_USED" />
+    
+    <many-to-one name="company" class="com.krishagni.crm.domain.Company" fetch="select">
+      <column name="COMPANY_ID" />
+    </many-to-one>  
+    
+    <query name="getAllCompany">
+      from
+        Company
+      where
+        status != 'DISABLED'
+    </query>
+  </class>
+</hibernate-mapping>
