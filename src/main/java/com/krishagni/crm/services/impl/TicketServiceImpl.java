@@ -54,7 +54,7 @@ public class TicketServiceImpl implements TicketService {
 		Map<String, Object> properties = new HashMap<>();
 		properties.put("reports", report);
 		String[] to = new String[] {"krishnawaidande1512@gmail.com", "ktgnair95@gmail.com"}; 
-		emailSvc.sendMail(UNTRACKED_COMPANY_MAIL_TEMPLATE, UNTRACKED_COMPANY_MAIL_SUBJECT, to, properties);
+		emailSvc.sendMail(MISSING_COMPANIES_MAIL_TEMPLATE, MISSING_COMPANIES_MAIL_SUBJECT, to, properties);
 	}
 
 	private void saveTickets(List<JiraTicket> tickets) {
@@ -63,9 +63,9 @@ public class TicketServiceImpl implements TicketService {
 		}
 	}
 	
-	private static final String UNTRACKED_COMPANY_MAIL_SUBJECT = "Krishagni: Missing companies list";
+	private static final String MISSING_COMPANIES_MAIL_SUBJECT = "Krishagni: Missing companies list";
 	
-	private static final String UNTRACKED_COMPANY_MAIL_TEMPLATE = "Missing_companies_list.vm";
+	private static final String MISSING_COMPANIES_MAIL_TEMPLATE = "Missing_companies_list.vm";
 	
 	private static final String COMPANY_NAME = "name";
 }
