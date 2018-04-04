@@ -2,9 +2,9 @@
   <h4> Hello Admins, </h4>
   <h4> Below is the list of companies which are not present in the database: </h4>
     <table>  
-      #foreach($report in $reports)
+      #foreach($company in $missingCompanies)
         <tr>
-  	  <td> $report </td>
+  	  <td> $company </td>
   	</tr>
       #end  
     </table>  

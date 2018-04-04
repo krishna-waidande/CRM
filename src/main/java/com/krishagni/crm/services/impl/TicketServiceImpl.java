@@ -50,9 +50,9 @@ public class TicketServiceImpl implements TicketService {
 		sendReportToAdmin(missingCompanies);
 	}
 	
-	private void sendReportToAdmin(HashSet<String> report) {
+	private void sendReportToAdmin(HashSet<String> missingCompanies) {
 		Map<String, Object> properties = new HashMap<>();
-		properties.put("reports", report);
+		properties.put("missingCompanies", missingCompanies);
 		String[] to = new String[] {"krishnawaidande1512@gmail.com", "ktgnair95@gmail.com"}; 
 		emailSvc.sendMail(MISSING_COMPANIES_MAIL_TEMPLATE, MISSING_COMPANIES_MAIL_SUBJECT, to, properties);
 	}
@@ -65,7 +65,7 @@ public class TicketServiceImpl implements TicketService {
 	
 	private static final String MISSING_COMPANIES_MAIL_SUBJECT = "Krishagni: Missing companies list";
 	
-	private static final String MISSING_COMPANIES_MAIL_TEMPLATE = "Missing_companies_list.vm";
+	private static final String MISSING_COMPANIES_MAIL_TEMPLATE = "missing_companies_list.vm";
 	
 	private static final String COMPANY_NAME = "name";
 }
