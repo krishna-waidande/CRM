@@ -1,6 +1,6 @@
 <div>
   <h4> Hello Admins, </h4>
-  <h4> Unable to load tickets for following companies because these companies are not added to our database : </h4>
+  <h4> Below is the list of companies which are not present in the database: </h4>
     <table>  
       #foreach($report in $reports)
         <tr>

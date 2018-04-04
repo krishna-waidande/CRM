@@ -33,7 +33,7 @@ public class TicketServiceImpl implements TicketService {
 	}
 
 	public void generateTickets(TicketDetail ticketDetail) {
-		HashSet<String> untrackedCompanies = new HashSet<String>(); 
+		HashSet<String> missingCompanies = new HashSet<String>(); 
 		List<JiraTicket> tickets = new ArrayList<JiraTicket>();
 		
 		for (TicketDetail.Issue issue : ticketDetail.getIssues()) {
@@ -43,11 +43,11 @@ public class TicketServiceImpl implements TicketService {
 				JiraTicket ticket = ticketFactory.createTicket(issue, company);
 				tickets.add(ticket);
 			} else {
-				untrackedCompanies.add(companyName +"\n");
+				missingCompanies.add(companyName +"\n");
 			}
 		}
 		saveTickets(tickets);
-		sendReportToAdmin(untrackedCompanies);
+		sendReportToAdmin(missingCompanies);
 	}
 	
 	private void sendReportToAdmin(HashSet<String> report) {
@@ -63,9 +63,9 @@ public class TicketServiceImpl implements TicketService {
 		}
 	}
 	
-	private static final String UNTRACKED_COMPANY_MAIL_SUBJECT = "Untracked tickets company list";
+	private static final String UNTRACKED_COMPANY_MAIL_SUBJECT = "Krishagni: Missing companies list";
 	
-	private static final String UNTRACKED_COMPANY_MAIL_TEMPLATE = "untracked_tickets_company_list.vm";
+	private static final String UNTRACKED_COMPANY_MAIL_TEMPLATE = "Missing_companies_list.vm";
 	
 	private static final String COMPANY_NAME = "name";
 }
