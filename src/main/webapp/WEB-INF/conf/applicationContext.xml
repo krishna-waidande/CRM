@@ -91,8 +91,21 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <property name="taskExecutor" ref="taskExecutor"></property>
   </bean>
  
-  <bean id="companyFactory" class="com.krishagni.crm.domain.factory.impl.CompanyFactoryImpl" />
+  <bean id="ticketFactory" class="com.krishagni.crm.domain.factory.impl.TicketFactoryImpl" />
+
+  <bean id="ticketSvc" class="com.krishagni.crm.services.impl.TicketServiceImpl">
+    <property name="dao" ref="dao"></property>
+    <property name="ticketFactory" ref="ticketFactory"></property>
+    <property name="emailSvc" ref="emailSvc"></property>
+  </bean>
   
+  <bean id="importer" class="com.krishagni.crm.event.TicketImporter">
+    <property name="dao" ref="dao" />
+    <property name="ticketSvc" ref="ticketSvc" />
+  </bean>
+   
+  <bean id="companyFactory" class="com.krishagni.crm.domain.factory.impl.CompanyFactoryImpl" />
+   
   <bean id="companySvc" class="com.krishagni.crm.services.impl.CompanyServiceImpl">
     <property name="companyFactory" ref="companyFactory"></property>
     <property name="dao" ref="dao"></property>

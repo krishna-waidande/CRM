@@ -27,6 +27,13 @@
     
     <property name="status" column="STATUS" />
     
+    <set name="tickets" table="TICKETS" inverse="true">
+      <key>
+        <column name="COMPANY_ID" not-null="true" />
+      </key>
+      <one-to-many class="com.krishagni.crm.domain.JiraTicket"/>
+    </set>
+    
     <query name="getCompanyById">
       from
         Company

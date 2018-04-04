@@ -3,11 +3,19 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="com.krishagni.crm.domain.Ticket" table="TICKET">
-    <id name="jiraId" column="JIRA_ID"/>
+  <class name="com.krishagni.crm.domain.JiraTicket" table="TICKETS">
+    <id name="id" column="ID">
+      <generator class="native" />
+    </id>
+      
+    <property name="jiraId" column="JIRA_ID"/>
     
-    <property name="resolveDate" column="RESOLVED_DATE"/>
+    <property name="resolveDate" column="RESOLVE_DATE"/>
     
     <property name="summary" column="SUMMARY"/>
+    
+    <property name="creditsUsed" column="CREDITS_USED"/>
+    
+    <many-to-one name="company" column="COMPANY_ID"/>
   </class>
 </hibernate-mapping>

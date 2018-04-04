@@ -13,11 +13,11 @@ import com.krishagni.crm.domain.Company;
 import com.krishagni.crm.domain.Company.ContractType;
 import com.krishagni.crm.event.CompanyListCriteria;
 import com.krishagni.crm.common.util.Status;
-import com.krishagni.crm.domain.Ticket;
+import com.krishagni.crm.domain.JiraTicket;
 import com.krishagni.crm.dao.CompanyDao;
 
 public class CompanyDaoImpl implements CompanyDao {
-	SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;
 	
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
@@ -92,12 +92,13 @@ public class CompanyDaoImpl implements CompanyDao {
 		return query;
 	}
 	
-	public void saveTicket(Ticket ticket) {
+	public void saveTicket(JiraTicket ticket) {
 		sessionFactory.getCurrentSession().save(ticket);
 	}
 	
-	public int truncateTable() {
-		return sessionFactory.getCurrentSession().createQuery("delete from Ticket").executeUpdate();
+	public void truncateTable() {
+		Query query = sessionFactory.getCurrentSession().createSQLQuery("TRUNCATE TABLE TICKETS");
+		query.executeUpdate();
 	}
 
 	private static final String FQN = Company.class.getName();
