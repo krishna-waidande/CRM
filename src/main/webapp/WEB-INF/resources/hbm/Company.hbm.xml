@@ -27,7 +27,7 @@
     
     <property name="status" column="STATUS" />
     
-    <set name="tickets" table="TICKETS" inverse="true" fetch="select">
+    <set name="tickets" table="TICKETS" inverse="true">
       <key>
         <column name="COMPANY_ID" not-null="true" />
       </key>

@@ -15,16 +15,7 @@
     <property name="resolveDate" column="RESOLVE_DATE" />
     
     <property name="creditsUsed" column="CREDITS_USED" />
-    
-    <many-to-one name="company" class="com.krishagni.crm.domain.Company" fetch="select">
-      <column name="COMPANY_ID" />
-    </many-to-one>  
-    
-    <query name="getAllCompany">
-      from
-        Company
-      where
-        status != 'DISABLED'
-    </query>
+
+    <many-to-one name="company" column="COMPANY_ID" />
   </class>
 </hibernate-mapping>

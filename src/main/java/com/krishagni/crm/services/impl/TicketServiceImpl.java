@@ -9,13 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.krishagni.crm.dao.CompanyDao;
 import com.krishagni.crm.domain.Company;
 import com.krishagni.crm.domain.JiraTicket;
+import com.krishagni.crm.event.CompanyListCriteria;
 import com.krishagni.crm.services.EmailService;
 import com.krishagni.crm.services.TicketService;
 
 public class TicketServiceImpl implements TicketService{
-	EmailService emailSvc;
+	private EmailService emailSvc;
 	
-	CompanyDao dao;
+	private CompanyDao dao;	
 	
 	public void setEmailSvc(EmailService emailSvc) {
 		this.emailSvc = emailSvc;
@@ -32,24 +33,24 @@ public class TicketServiceImpl implements TicketService{
 	}
 
 	public void getTickets() {
-		List<Company> companies = dao.getAllCompany();
-		int remainingCredits = 0,totalCreditsUsed = 0;
-		
+		CompanyListCriteria criteria = new CompanyListCriteria();
+		List<Company> companies = dao.getCompanies(criteria);
 		for (Company company : companies) {
+			int totalCreditsUsed = 0;
 			Set<JiraTicket> tickets = company.getTickets();
 			for (JiraTicket t : tickets) {
 				totalCreditsUsed = totalCreditsUsed + t.getCreditsUsed();
 			}
-			remainingCredits = company.getCredits() - totalCreditsUsed;
+			int remainingCredits = company.getCredits() - totalCreditsUsed;
 			Map<String, Object> properties = new HashMap<>();
 			properties.put("company", company);
 			properties.put("remainingCredits", remainingCredits);
 			properties.put("credits", totalCreditsUsed);
 			String[] to = new String[] {"ktgnair95@gmail.com", "krishnawaidande1512@gmail.com"};
-			emailSvc.sendMail(JIRA_TICKET_MAIL_TEMPLATE, JIRA_TICKET_MAIL_SUBJECT, to, properties);
+			emailSvc.sendMail(CREDITS_SUMMARY_MAIL_TEMPLATE, CREDITS_SUMMARY_MAIL_SUBJECT, to, properties);
 		}
 	}
-	private static final String JIRA_TICKET_MAIL_SUBJECT = "OpenSpecimen: Support credit summary";
+	private static final String CREDITS_SUMMARY_MAIL_SUBJECT = "OpenSpecimen: Support credit summary";
 	
-	private static final String JIRA_TICKET_MAIL_TEMPLATE = "jira_ticket_summary.vm";	
+	private static final String CREDITS_SUMMARY_MAIL_TEMPLATE = "credit_summary.vm";	
 }

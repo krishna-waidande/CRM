@@ -13,7 +13,6 @@ import com.krishagni.crm.common.util.Status;
 import com.krishagni.crm.dao.CompanyDao;
 import com.krishagni.crm.domain.Company;
 import com.krishagni.crm.domain.Company.ContractType;
-import com.krishagni.crm.domain.JiraTicket;
 import com.krishagni.crm.event.CompanyListCriteria;
 
 public class CompanyDaoImpl implements CompanyDao {
@@ -34,12 +33,7 @@ public class CompanyDaoImpl implements CompanyDao {
 		query.setParameter("name", name);
 		return (Company) query.uniqueResult();
 	}
-	
-	public List<Company> getAllCompany(){
-		Query query = sessionFactory.getCurrentSession().getNamedQuery(GET_ALL_COMPANY);
-		return query.list();
-	}
-		
+
 	@SuppressWarnings("unchecked")
 	public List<Company> getCompanies(CompanyListCriteria criteria) {
 		Criteria query = sessionFactory.getCurrentSession()
@@ -99,13 +93,9 @@ public class CompanyDaoImpl implements CompanyDao {
 
 	private static final String FQN = Company.class.getName();
 	
-	private static final String FQN1 = JiraTicket.class.getName();
-
 	private static final String GET_COMPANY_BY_ID = FQN + ".getCompanyById";
 	
 	private static final String GET_COMPANY_BY_NAME = FQN + ".getCompanyByName";
-	
-	private static final String GET_ALL_COMPANY = FQN1 + ".getAllCompany";
-	
+		
 	private static final String GET_CONTRACT_EXPIRING_CMPS = FQN + ".getContractExpiringCompanies";
 }

@@ -16,6 +16,8 @@
 	<h4> Credits spent: $credits </h4>
 
 	<h4> Credits left: $remainingCredits </h4>
+	
+	<h4> Tickets Log </h4>
      
     <table width=30% style=border-collapse:collapse>
      <tr>

@@ -10,8 +10,8 @@ public interface CompanyDao {
 	
 	Company getCompanyByName(String name);
 	
-	List<Company> getAllCompany();
-		 
+	//List<Company> getAllCompany();
+	
 	List<Company> getCompanies(CompanyListCriteria criteria);
 	
 	List<Company> getContractExpiringCompanies(Date date);

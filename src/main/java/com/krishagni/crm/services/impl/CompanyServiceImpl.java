@@ -16,15 +16,14 @@ import com.krishagni.crm.event.CompanyListCriteria;
 import com.krishagni.crm.exception.CRMException;
 import com.krishagni.crm.services.CompanyService;
 import com.krishagni.crm.services.EmailService;
-
 import org.apache.commons.lang3.StringUtils;
 
 public class CompanyServiceImpl implements CompanyService {
-	CompanyFactory companyFactory;
+	private CompanyFactory companyFactory;
 	
-	CompanyDao dao;
+	private CompanyDao dao;
 	
-	EmailService emailSvc;
+	private EmailService emailSvc;
 	
 	public void setCompanyFactory(CompanyFactory companyFactory) {
 		this.companyFactory = companyFactory;
