@@ -2,7 +2,6 @@ package com.krishagni.crm.domain;
 
 import java.util.Date;
 import java.util.Set;
-
 import com.krishagni.crm.common.util.Status;
 import com.krishagni.crm.common.util.Utility;
 

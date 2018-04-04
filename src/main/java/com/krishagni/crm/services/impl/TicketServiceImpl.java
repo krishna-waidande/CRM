@@ -35,18 +35,18 @@ public class TicketServiceImpl implements TicketService{
 	public void getTickets() {
 		CompanyListCriteria criteria = new CompanyListCriteria();
 		List<Company> companies = dao.getCompanies(criteria);
+		String[] to = new String[] {"ktgnair95@gmail.com", "krishnawaidande1512@gmail.com"};
 		for (Company company : companies) {
 			int totalCreditsUsed = 0;
 			Set<JiraTicket> tickets = company.getTickets();
-			for (JiraTicket t : tickets) {
-				totalCreditsUsed = totalCreditsUsed + t.getCreditsUsed();
+			for (JiraTicket jiraTicket : tickets) {
+				totalCreditsUsed = totalCreditsUsed + jiraTicket.getCreditsUsed();
 			}
 			int remainingCredits = company.getCredits() - totalCreditsUsed;
 			Map<String, Object> properties = new HashMap<>();
 			properties.put("company", company);
 			properties.put("remainingCredits", remainingCredits);
 			properties.put("credits", totalCreditsUsed);
-			String[] to = new String[] {"ktgnair95@gmail.com", "krishnawaidande1512@gmail.com"};
 			emailSvc.sendMail(CREDITS_SUMMARY_MAIL_TEMPLATE, CREDITS_SUMMARY_MAIL_SUBJECT, to, properties);
 		}
 	}
