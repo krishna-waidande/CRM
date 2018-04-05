@@ -22,7 +22,7 @@ public class TicketImporter {
 	}
 
 	@Transactional
-	@Scheduled(cron = "0 0/2 * * * ?")
+	@Scheduled(cron = "0 0 12 L * ?")
 	public void loadTicketsAndsaveInDataBase() {
 		clearTickets();
 		importJson();
