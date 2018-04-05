@@ -9,7 +9,7 @@
     </id>
     
     <property name="name" column="NAME" unique="true" />
-    
+        
     <property name="contractType" column="CONTRACT_TYPE" not-null="true">
       <type name="org.hibernate.type.EnumType">
         <param name="enumClass">com.krishagni.crm.domain.Company$ContractType</param>
@@ -26,6 +26,8 @@
     <property name="notes" column="NOTES" />
     
     <property name="status" column="STATUS" />
+    
+    <property name="emailId" column="EMAIL_ID" />
     
     <set name="tickets" table="TICKETS" inverse="true">
       <key>

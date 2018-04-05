@@ -10,7 +10,7 @@ public class CompanyDetail {
 	private Long id;
 	
 	private String name;
-
+	
 	private String contractType;
 	
 	private int credits;
@@ -23,6 +23,8 @@ public class CompanyDetail {
 	
 	private String status;
 	
+	private String emailId;
+
 	public Long getId() {
 		return id;
 	}
@@ -86,6 +88,14 @@ public class CompanyDetail {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	
+	public String getEmailId() {
+		return emailId;
+	}
+
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
 
 	public static CompanyDetail from(Company company) {
 		CompanyDetail detail = new CompanyDetail();
@@ -97,6 +107,7 @@ public class CompanyDetail {
 		detail.setEndDate(company.getEndDate());
 		detail.setNotes(company.getNotes());
 		detail.setStatus(company.getStatus());
+		detail.setEmailId(company.getEmailId());
 		return detail;
 	}	
 

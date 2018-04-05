@@ -27,7 +27,7 @@ public class TicketServiceImpl implements TicketService{
 	}
 	
 	@Transactional
-	@Scheduled(cron = "0 0/1 * * * ?")
+	@Scheduled(cron = "0 * 22 * * ?")
 	public void generateReport() {
 		getTickets();
 	}
@@ -35,7 +35,6 @@ public class TicketServiceImpl implements TicketService{
 	public void getTickets() {
 		CompanyListCriteria criteria = new CompanyListCriteria();
 		List<Company> companies = dao.getCompanies(criteria);
-		String[] to = new String[] {"ktgnair95@gmail.com", "krishnawaidande1512@gmail.com"};
 		for (Company company : companies) {
 			int totalCreditsUsed = 0;
 			Set<JiraTicket> tickets = company.getTickets();
@@ -47,6 +46,7 @@ public class TicketServiceImpl implements TicketService{
 			properties.put("company", company);
 			properties.put("remainingCredits", remainingCredits);
 			properties.put("credits", totalCreditsUsed);
+			String[] to = new String[] {company.getEmailId()};
 			emailSvc.sendMail(CREDITS_SUMMARY_MAIL_TEMPLATE, CREDITS_SUMMARY_MAIL_SUBJECT, to, properties);
 		}
 	}

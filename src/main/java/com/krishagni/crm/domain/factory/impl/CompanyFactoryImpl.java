@@ -6,6 +6,8 @@ import com.krishagni.crm.domain.Company;
 import com.krishagni.crm.domain.Company.ContractType;
 import com.krishagni.crm.domain.factory.CompanyFactory;
 import com.krishagni.crm.event.CompanyDetail;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 
 public class CompanyFactoryImpl implements CompanyFactory {
@@ -20,6 +22,7 @@ public class CompanyFactoryImpl implements CompanyFactory {
 		setEndDate(detail, company, crmEx);
 		setNotes(detail, company, crmEx);
 		setStatus(detail, company, crmEx);
+		setEmailId(detail, company, crmEx);
 		crmEx.checkAndThrow();
 		return company;
 	}
@@ -32,7 +35,7 @@ public class CompanyFactoryImpl implements CompanyFactory {
 		
 		company.setName(detail.getName());	
 	}
-		
+	
 	private void setContractType(CompanyDetail detail, Company company, CRMException crmEx) {
 		String contractType = detail.getContractType();
 		
@@ -96,5 +99,29 @@ public class CompanyFactoryImpl implements CompanyFactory {
 		}
 		
 		company.setStatus(detail.getStatus().toUpperCase());
+	}
+	
+	private void setEmailId(CompanyDetail detail, Company company, CRMException crmEx) {
+		if (StringUtils.isBlank(detail.getEmailId())) {
+			crmEx.addError("Company email can't be empty.");
+			return;
+		}
+		validateEmail(detail.getEmailId(), company, crmEx);
+	}
+	
+	private void validateEmail(String email, Company company, CRMException crmEx) {
+		Pattern regexPattern;
+		Matcher regexMatcher;
+		int i;
+		String[] emailSeparator = email.split(",");
+		regexPattern = Pattern.compile("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]{2,3}+$");		
+		for (i=0; i<emailSeparator.length;i++) {
+			regexMatcher   = regexPattern.matcher(emailSeparator[i].trim());
+			if (!regexMatcher.matches()) {
+				crmEx.addError("The following email id is invalid "+ emailSeparator[i]);
+				return;
+			} 
+		}
+		company.setEmailId(email);
 	}
 }

@@ -75,7 +75,7 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Transactional
-	@Scheduled(cron = "0 0/1 * * * ?")
+	@Scheduled(cron = "0 * 22 * * ?")
 	public void notifyContractExpiringCmps() {
 		notifyContractExpiringCmps(null);
 	}

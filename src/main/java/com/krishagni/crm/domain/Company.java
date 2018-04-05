@@ -29,6 +29,8 @@ public class Company {
 	
 	private String status;
 	
+	private String emailId;
+		
 	private Set<JiraTicket> tickets;
 	
 	public Long getId() {
@@ -46,7 +48,7 @@ public class Company {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+		
 	public ContractType getContractType() {
 		return contractType;
 	}
@@ -94,6 +96,14 @@ public class Company {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	
+	public String getEmailId() {
+		return emailId;
+	}
+
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
 
 	public Set<JiraTicket> getTickets() {
 		return tickets;
@@ -110,6 +120,7 @@ public class Company {
 		this.setStartDate(company.getStartDate());
 		this.setEndDate(company.getEndDate());
 		this.setNotes(company.getNotes());
+		this.setEmailId(company.getEmailId());
 		setActivityStatus(company.getStatus());
 	}
 
