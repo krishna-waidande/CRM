@@ -27,7 +27,7 @@ public class TicketServiceImpl implements TicketService{
 	}
 	
 	@Transactional
-	@Scheduled(cron = "0 * 22 * * ?")
+	@Scheduled(cron = "0 0/1 * * * ?")
 	public void generateReport() {
 		getTickets();
 	}
@@ -46,7 +46,7 @@ public class TicketServiceImpl implements TicketService{
 			properties.put("company", company);
 			properties.put("remainingCredits", remainingCredits);
 			properties.put("credits", totalCreditsUsed);
-			String[] to = new String[] {company.getEmailId()};
+			String[] to = company.getEmailId().split(",");
 			emailSvc.sendMail(CREDITS_SUMMARY_MAIL_TEMPLATE, CREDITS_SUMMARY_MAIL_SUBJECT, to, properties);
 		}
 	}
